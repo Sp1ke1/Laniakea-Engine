@@ -27,7 +27,7 @@ namespace lk {
     }
 
     void Logger::Log(const std::string &Message) {
-        Log(LoggerMessage{"Tag_None", LoggerMessageType::Log, Message});
+        Log(LoggerMessage{"Tag_None", LogMessageType::Log, Message});
     }
 
     void Logger::Log(const LoggerMessage &Message) {
@@ -42,15 +42,15 @@ namespace lk {
                   << Message.Message << std::endl;
     }
 
-    std::string LoggerMessageTypeToString(LoggerMessageType type) {
+    std::string LoggerMessageTypeToString(LogMessageType type) {
         switch (type) {
-            case LoggerMessageType::Log:
+            case LogMessageType::Log:
                 return "Log";
-            case LoggerMessageType::Warning:
+            case LogMessageType::Warning:
                 return "Warning";
-            case LoggerMessageType::Error:
+            case LogMessageType::Error:
                 return "Error";
-            case LoggerMessageType::Undefined:
+            case LogMessageType::Undefined:
                 return "Undefined";
             default:
                 break;
@@ -67,7 +67,7 @@ namespace lk {
         return Out;
     }
 
-    std::vector<LoggerMessage> Logger::GetLogByMessageType(LoggerMessageType MessageType) const {
+    std::vector<LoggerMessage> Logger::GetLogByMessageType(LogMessageType MessageType) const {
         std::vector<LoggerMessage> Out; // TODO: there must be built-in std::views::filter
         for (auto &Message: m_Log) {
             if (Message.MessageType == MessageType)
@@ -90,7 +90,7 @@ namespace lk {
 
     }
 
-    void Logger::SetVerbosity(LoggerMessageType verbosity) {
+    void Logger::SetVerbosity(LogMessageType verbosity) {
         m_Verbosity = verbosity;
     }
 

@@ -1,9 +1,11 @@
 #pragma once
 
 #include "Logger.h"
+#include "glfw3.h"
 #include "ApplicationConfig.h"
 
-#define DEFAULT_CONFIG_PATH "config/ApplicationConfig.json" // TODO: move to argc argv
+
+
 namespace lk {
 class Application {
 public:
@@ -17,7 +19,7 @@ public:
      * @param argv The command line arguments.
      * @return True if initialization was successful, false otherwise.
      */
-    bool Init(int argc, char **argv);
+    bool Initialize(int argc, char **argv);
 
     /**
      * @brief Starts the main loop of the application.
@@ -38,6 +40,10 @@ public:
 
 private:
 
+    bool InitializeWindow();
+
+
+    GLFWwindow * m_MainWindow = nullptr;
 
 };
 } // end namespace lk

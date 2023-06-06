@@ -7,8 +7,8 @@ set(CMAKE_CXX_STANDARD 20)
 set(LANIAKEA_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
 
 # -------- Compiler flags setup --------
-set(COMPILER_RELEASE_FLAGS -O2)
-set(COMPILER_DEBUG_FLAGS -g -Wall -pedantic) # TODO: add sanitizer support ( Looks like they don't work under MinGW compiler )
+set(COMPILER_RELEASE_FLAGS -O2 -Wno-unknown-pragmas)
+set(COMPILER_DEBUG_FLAGS -g -Wall -pedantic -Wno-unknown-pragmas) # TODO: add sanitizer support ( Looks like they don't work under MinGW compiler )
 
 if (CMAKE_BUILD_TYPE MATCHES Debug)
     set (COMPILER_FLAGS ${COMPILER_DEBUG_FLAGS})

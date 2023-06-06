@@ -4,18 +4,18 @@
 #include <iostream>
 
 namespace lk {
-enum class LoggerMessageType {
+enum class LogMessageType {
     Undefined,
     Log,
     Warning,
     Error,
 };
 
-std::string LoggerMessageTypeToString(LoggerMessageType type);
+std::string LoggerMessageTypeToString(LogMessageType type);
 
 struct LoggerMessage {
     std::string Tag;
-    LoggerMessageType MessageType;
+    LogMessageType MessageType;
     std::string Message;
 
 };
@@ -42,11 +42,11 @@ public:
 
     std::vector<LoggerMessage> GetLogByTag(const std::string &Tag) const;
 
-    std::vector<LoggerMessage> GetLogByMessageType(LoggerMessageType MessageType) const;
+    std::vector<LoggerMessage> GetLogByMessageType(LogMessageType MessageType) const;
 
     void SetPrintToCerr(bool PrintToCerr);
 
-    void SetVerbosity(LoggerMessageType verbosity);
+    void SetVerbosity(LogMessageType verbosity);
 
 protected:
     Logger();
@@ -57,7 +57,7 @@ protected:
     static Logger *m_Instance;
     std::vector<LoggerMessage> m_Log;
     bool m_PrintToCerr = true;
-    LoggerMessageType m_Verbosity = LoggerMessageType::Log;
+    LogMessageType m_Verbosity = LogMessageType::Log;
 
 };
 } // end namespace laniakea

@@ -4,10 +4,18 @@
 
 
 
-namespace lk {
-bool Application::Init(int argc, char** argv)
+namespace lk
 {
 
+Application::~Application()
+{
+    Logger::Destroy();
+    ApplicationConfig::Destroy();
+    glfwTerminate();
+}
+
+bool Application::Initialize(int argc, char **argv)
+{
     std::string ConfigPath;
     bool CustomConfig = GetProgramArgumentValue( argc, argv, "config", ConfigPath );
     if ( !CustomConfig )
@@ -17,9 +25,21 @@ bool Application::Init(int argc, char** argv)
 
     if (!ApplicationConfig::Get() ->LoadConfigFromFile( ConfigPath ) )
     {
-        Logger::Get() -> Log( { "Application", LoggerMessageType::Error, "Application::Init() Can't load config from given path: " + ConfigPath } );
+        Logger::Get() -> Log( {"Application", LogMessageType::Error, "Application::Init() Can't load config from given path: " + ConfigPath } );
         return false;
     }
+
+    if ( !InitializeWindow () )
+    {
+        Logger::Get() -> Log ( {"Application", LogMessageType::Error, "Application::Init() Can't initialize window"});
+        return false;
+    }
+
+
+
+
+
+
     return true;
 }
 
@@ -37,11 +57,6 @@ void Application::Exit() {
 
 }
 
-Application::~Application()
-{
-    Logger::Destroy();
-    ApplicationConfig::Destroy();
-}
 
 
 
@@ -61,5 +76,41 @@ bool Application::GetProgramArgumentValue(int argc, char **argv, const std::stri
     }
     return false;
 }
+
+    bool Application::InitializeWindow() {
+
+        if (!glfwInit())
+        {
+            Logger::Get() -> Log ( {"Application", LogMessageType::Error, "Application::InitializeWindow(): Can't initialize GLFW" } );
+            return false;
+        }
+
+        std::string AppName;
+        if ( !ApplicationConfig::Get() -> GetVariableByName ( "ApplicationName", AppName ) )
+        {
+            Logger::Get() -> Log ( { "Application", LogMessageType::Warning, "Application::InitializeWindow(): Config doesn't contain application name" } );
+            AppName = DEFAULT_APPLICATION_NAME;
+        }
+
+        int WindowWidth;
+        int WindowHeight;
+
+        if ( !ApplicationConfig::Get() -> GetVariableByName ( "WindowWidth", WindowWidth )
+            || !ApplicationConfig::Get() -> GetVariableByName ( "WindowHeight", WindowHeight )
+            || WindowHeight <= 0 || WindowWidth <= 0 )
+        {
+            Logger::Get() -> Log ( { "Application", LogMessageType::Warning ,
+                                     "Application::InitializeWindow(): Config doesn't contain WindowWidth, WindowHeight or they are invalid" } );
+            WindowWidth = DEFAULT_WINDOW_WIDTH;
+            WindowHeight = DEFAULT_WINDOW_HEIGHT;
+        }
+        m_MainWindow  = glfwCreateWindow(WindowWidth, WindowHeight, AppName.c_str(), NULL, NULL);
+        if (!m_MainWindow){
+            Logger::Get() -> Log ( { "Application", LogMessageType::Error, "Application::InitializeWindow(): Can't create main window" } );
+            return false;
+        }
+        glfwMakeContextCurrent(m_MainWindow);
+        return true;
+    }
 
 } // end namespace lk

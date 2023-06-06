@@ -1,3 +1,5 @@
 {
-  "ApplicationName": "Laniakea"
+  "ApplicationName": "Laniakea",
+  "WindowWidth": 1920,
+  "WindowHeight": 1080
 }

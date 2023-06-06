@@ -4,6 +4,15 @@
 #include "Logger.h" // TODO: move core includes to separate .h file
 
 
+#pragma region CongigDefaults
+#define DEFAULT_CONFIG_PATH "config/ApplicationConfig.json"
+#define DEFAULT_APPLICATION_NAME "Laniakea"
+#define DEFAULT_WINDOW_WIDTH 1920
+#define DEFAULT_WINDOW_HEIGHT 1080
+#pragma endregion
+
+
+
 namespace lk {
 class ApplicationConfig {
 
@@ -28,7 +37,10 @@ public:
 
     bool LoadConfigFromFile ( const std::string & filename );
 
+
+
 protected:
+    auto static GetDefaultConfig ();
     ApplicationConfig() = default;
 
 private:

@@ -11,14 +11,14 @@ bool ApplicationConfig::LoadConfigFromFile(const std::string &filename) {
     std::ifstream f(filename);
     if (!f) {
         std::string ErrMessage = std::string ( "ApplicationConfig::LoadConfigFromFile() : Can't open config file with given name: " ) + filename;
-        Logger::Get() -> Log( { "ApplicationConfig", LoggerMessageType::Error, ErrMessage } );
-        return false; // TOOD: fallback to default config
+        Logger::Get() -> Log( {"ApplicationConfig", LogMessageType::Error, ErrMessage } );
+        return false;
     }
     m_ConfigJson = nlohmann::json::parse ( f, nullptr, false );
     if ( m_ConfigJson.is_discarded() ) {
-        Logger::Get()->Log({"ApplicationConfig", LoggerMessageType::Error,
+        Logger::Get()->Log({"ApplicationConfig", LogMessageType::Error,
                             "ApplicationConfig::LoadConfigFromFile() Error parsing config as json"});
-        return false; // TODO: fallback to default config
+        return false;
     }
     return true;
 }
