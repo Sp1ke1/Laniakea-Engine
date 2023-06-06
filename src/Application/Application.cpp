@@ -16,6 +16,11 @@ Application::~Application()
 
 bool Application::Initialize(int argc, char **argv)
 {
+    if ( m_IsInitialized )
+    {
+        Logger::Get() -> Log ( { "Application", LogMessageType::Warning, "Application()::Init() Application was already initialized" } );
+        return false;
+    }
     std::string ConfigPath;
     bool CustomConfig = GetProgramArgumentValue( argc, argv, "config", ConfigPath );
     if ( !CustomConfig )
@@ -29,17 +34,18 @@ bool Application::Initialize(int argc, char **argv)
         return false;
     }
 
-    if ( !InitializeWindow () )
-    {
-        Logger::Get() -> Log ( {"Application", LogMessageType::Error, "Application::Init() Can't initialize window"});
+    if ( !InitializeWindow () ) {
+        Logger::Get()->Log({"Application", LogMessageType::Error, "Application::Init() Can't initialize window"});
         return false;
     }
 
+    if ( !InitializeInput() )
+    {
+        Logger::Get() -> Log ( { "Application", LogMessageType::Error, "Application::Init() Can't initialize input system" } );
+        return false;
+    }
 
-
-
-
-
+    m_IsInitialized = true;
     return true;
 }
 
@@ -111,6 +117,10 @@ bool Application::GetProgramArgumentValue(int argc, char **argv, const std::stri
         }
         glfwMakeContextCurrent(m_MainWindow);
         return true;
+    }
+
+    bool Application::InitializeInput() {
+
     }
 
 } // end namespace lk

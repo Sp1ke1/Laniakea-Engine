@@ -3,6 +3,7 @@
 #include "Logger.h"
 #include "glfw3.h"
 #include "ApplicationConfig.h"
+#include "InputHandler.h"
 
 
 
@@ -34,16 +35,17 @@ public:
     void Exit();
 
 
-    void Update();
-
-    static bool GetProgramArgumentValue ( int argc, char ** argv, const std::string & ArgumentName, std::string & value);
-
 private:
-
+    static bool GetProgramArgumentValue ( int argc, char ** argv, const std::string & ArgumentName, std::string & value);
+    void Update();
+    bool InitializeInput();
     bool InitializeWindow();
 
 
     GLFWwindow * m_MainWindow = nullptr;
+    bool m_IsInitialized = false;
+    InputHandler * m_InputHandler = nullptr;
+
 
 };
 } // end namespace lk

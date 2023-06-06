@@ -26,7 +26,7 @@ include_directories ( ${PROJECT_SOURCE_DIR}/ThirdParty/json/include)
 link_directories(${PROJECT_SOURCE_DIR}/ThirdParty/glfw/lib)
 
 # -------- Add executables  --------
-set (LANIAKEA_SOURCE_APPLICATION ${LANIAKEA_SOURCE_DIR}/Application/Application.cpp src/Application/Logger.cpp src/Application/Logger.h src/Application/ApplicationConfig.cpp src/Application/ApplicationConfig.h)
+set (LANIAKEA_SOURCE_APPLICATION ${LANIAKEA_SOURCE_DIR}/Application/Application.cpp src/Application/Logger.cpp src/Application/Logger.h src/Application/ApplicationConfig.cpp src/Application/ApplicationConfig.h src/Application/InputHandler.cpp src/Application/InputHandler.h)
 add_executable(laniakea src/Application/main.cpp ${LANIAKEA_SOURCE_APPLICATION})
 
 # -------- Link target --------
