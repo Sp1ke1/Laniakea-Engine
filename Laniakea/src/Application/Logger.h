@@ -1,4 +1,5 @@
 #pragma once
+#include "Core.h"
 #include <vector>
 #include <string>
 #include <iostream>
@@ -20,7 +21,7 @@ struct LoggerMessage {
 
 };
 
-class Logger {
+class LANIAKEA_API Logger {
 
 
 public:

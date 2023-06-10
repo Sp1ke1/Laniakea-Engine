@@ -120,7 +120,7 @@ bool Application::GetProgramArgumentValue(int argc, char **argv, const std::stri
     }
 
     bool Application::InitializeInput() {
-
+        return false;
     }
 
 } // end namespace lk

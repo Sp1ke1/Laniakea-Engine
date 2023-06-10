@@ -1,7 +1,7 @@
 #pragma once
-#include "json.hpp"
+#include "json/include/json.hpp"
+#include "Core.h"
 #include <fstream>
-#include "Logger.h" // TODO: move core includes to separate .h file
 
 
 #pragma region CongigDefaults

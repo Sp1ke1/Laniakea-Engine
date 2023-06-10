@@ -1,14 +1,13 @@
 #pragma once
 
-#include "Logger.h"
-#include "glfw3.h"
+#include "Core.h"
+#include "glfw/include/glfw3.h"
 #include "ApplicationConfig.h"
-#include "InputHandler.h"
 
 
 
 namespace lk {
-class Application {
+class LANIAKEA_API Application {
 public:
 
     ~Application();
@@ -44,8 +43,11 @@ private:
 
     GLFWwindow * m_MainWindow = nullptr;
     bool m_IsInitialized = false;
-    InputHandler * m_InputHandler = nullptr;
+    Input * m_InputHandler = nullptr;
 
 
 };
+
+    // To be defined in client
+    Application * CreateApplication();
 } // end namespace lk

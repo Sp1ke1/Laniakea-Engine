@@ -2,8 +2,8 @@
 
 #include <map>
 #include <vector>
-#include "glfw3.h"
-#include "Logger.h"
+#include "glfw/include/glfw3.h"
+#include "Core.h"
 
 // TODO: Consider making event based input
 // TODO: http://www.grandmaster.nu/blog/?page_id=191
@@ -16,12 +16,12 @@ enum class KeyState {
     Hold
 };
 
-class InputHandler {
+class LANIAKEA_API Input {
 
 public:
-    InputHandler(GLFWwindow *window);
+    Input(GLFWwindow *window);
 
-    ~InputHandler() = default;
+    ~Input() = default;
 
     bool GetIsKeyDown(int Key) const;
 
@@ -35,8 +35,8 @@ private:
     static void MouseButtonCallback(GLFWwindow *window, int button, int action, int mods);
 
 
-    std::map<int, KeyState> m_KeyboardButtons;
-    std::map<int, KeyState> m_MouseButtons;
+   /* std::map<int, KeyState> m_KeyboardButtons;
+    std::map<int, KeyState> m_MouseButtons;*/
 
 };
 } // end namespace lk

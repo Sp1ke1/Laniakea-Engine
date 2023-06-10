@@ -1,3 +1,4 @@
+/*
 #include "glfw3.h"
 #include "Application.h"
 #include "Logger.h"
@@ -23,6 +24,7 @@ int main(int argc, char ** argv)
     }
     return EXIT_SUCCESS;
 
+*/
 
 
 
