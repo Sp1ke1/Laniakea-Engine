@@ -1,6 +1,7 @@
 #pragma once
 #include "json/include/json.hpp"
 #include "Core.h"
+#include <functional>
 #include <fstream>
 
 
@@ -32,6 +33,23 @@ public:
         if ( !m_ConfigJson.contains( VarName ) )
             return false;
         value = m_ConfigJson[VarName].get<ValueType> ();
+        return true;
+    }
+
+    template <typename ValueType, typename Predicate>
+    bool GetVariableByNameChecked ( const std::string & VarName, ValueType & value, Predicate p  ) const
+    {
+        if ( !m_ConfigJson.contains ( VarName ) )
+        {
+            Logger::Get() ->Log( { "Config", LogMessageType::Error, std::string ( "Config doesn't contain variable with name: ") + VarName } );
+            return false;
+        }
+        value = m_ConfigJson[VarName].get<ValueType> ();
+        if ( !p ( value ) )
+        {
+            Logger::Get() -> Log ( { "Config", LogMessageType::Error, std::string ( "Config variable: ") + VarName + " doesn't matches predicate filter " } );
+            return false;
+        }
         return true;
     }
 

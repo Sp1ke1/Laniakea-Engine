@@ -3,7 +3,7 @@
 
 
 
-class __declspec ( dllimport ) SampleProject : public lk::Application
+class SampleProject : public lk::Application
 {
 public:
     SampleProject() = default;

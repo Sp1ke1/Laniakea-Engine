@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Core.h"
-#include "glfw/include/glfw3.h"
+#include "Events/ApplicationEvent.h"
+#include "Window.h"
 #include "ApplicationConfig.h"
 
 
@@ -39,13 +40,13 @@ private:
     void Update();
     bool InitializeInput();
     bool InitializeWindow();
+    void OnEvent ( Event & E );
 
 
-    GLFWwindow * m_MainWindow = nullptr;
-    bool m_IsInitialized = false;
+    std::unique_ptr <Window> m_Window = nullptr;
     Input * m_InputHandler = nullptr;
-
-
+    bool m_IsInitialized = false;
+    bool m_Running = false;
 };
 
     // To be defined in client

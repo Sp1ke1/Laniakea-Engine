@@ -36,8 +36,8 @@ ENDIF ()
 
 
 
+# -------- Code processing --------
 include_directories( ${LANIAKEA_INCLUDE_DIR} )
-
 set ( SAMPLE_PROJECT_SOURCE ${SAMPLE_PROJECT_SOURCE_DIR}/SampleProject.cpp )
 add_executable( SampleProject ${SAMPLE_PROJECT_SOURCE} )
 target_link_libraries ( SampleProject ${SAMPLE_PROJECT_BUILD_DIR}/libLaniakeaEngine.dll )

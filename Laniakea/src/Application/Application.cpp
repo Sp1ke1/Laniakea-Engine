@@ -34,7 +34,7 @@ bool Application::Initialize(int argc, char **argv)
         return false;
     }
 
-    if ( !InitializeWindow () ) {
+    if ( ! InitializeWindow () ) {
         Logger::Get()->Log({"Application", LogMessageType::Error, "Application::Init() Can't initialize window"});
         return false;
     }
@@ -51,7 +51,22 @@ bool Application::Initialize(int argc, char **argv)
 
 
 bool Application::StartMainLoop() {
-    return false;
+    if ( m_Running ) {
+        LK_LOG("Application", LogMessageType::Warning, "Application::StartMainLoop() called when application is already running.")
+        return false;
+    }
+
+    m_Running = true;
+
+    while ( m_Running )
+    {
+        glClearColor (1, 0, 1, 1);
+        glClear(GL_COLOR_BUFFER_BIT);
+        LK_ASSERT ( m_Window );
+        m_Window -> Update();
+    }
+    return true;
+
 }
 
 void Application::Update() {
@@ -66,61 +81,62 @@ void Application::Exit() {
 
 
 
-bool Application::GetProgramArgumentValue(int argc, char **argv, const std::string &ArgumentName, std::string &value)
-{
-    if ( argc < 1 )
-        return false;
-    for ( int i = 0; i < argc; i ++ )
+    bool Application::GetProgramArgumentValue(int argc, char **argv, const std::string &ArgumentName, std::string &value)
     {
-        if ( argv[i] == ArgumentName || argv[i] == '-' + ArgumentName )
+        if ( argc < 1 )
+            return false;
+        for ( int i = 0; i < argc; i ++ )
         {
-            if ( i + 1 >= argc )
-                return false;
-            value = argv[i+1];
-            return true;
+            if ( argv[i] == ArgumentName || argv[i] == '-' + ArgumentName )
+            {
+                if ( i + 1 >= argc )
+                    return false;
+                value = argv[i+1];
+                return true;
+            }
         }
+        return false;
     }
-    return false;
-}
 
     bool Application::InitializeWindow() {
 
-        if (!glfwInit())
-        {
-            Logger::Get() -> Log ( {"Application", LogMessageType::Error, "Application::InitializeWindow(): Can't initialize GLFW" } );
-            return false;
-        }
-
+        // Get window name and windows sizes variables from application config
         std::string AppName;
-        if ( !ApplicationConfig::Get() -> GetVariableByName ( "ApplicationName", AppName ) )
+
+        auto AppNameCheckFn = []( const std::string & AppName ) { return !AppName.empty(); };
+        if ( !ApplicationConfig :: Get() ->GetVariableByNameChecked( "ApplicationName", AppName,AppNameCheckFn ) )
         {
-            Logger::Get() -> Log ( { "Application", LogMessageType::Warning, "Application::InitializeWindow(): Config doesn't contain application name" } );
             AppName = DEFAULT_APPLICATION_NAME;
         }
 
         int WindowWidth;
         int WindowHeight;
 
-        if ( !ApplicationConfig::Get() -> GetVariableByName ( "WindowWidth", WindowWidth )
-            || !ApplicationConfig::Get() -> GetVariableByName ( "WindowHeight", WindowHeight )
-            || WindowHeight <= 0 || WindowWidth <= 0 )
+        auto WindowSizeCheckFn = [] ( int Value ) { return Value > 0; };
+        if ( !ApplicationConfig::Get() ->GetVariableByNameChecked( "WindowWidth", WindowWidth, WindowSizeCheckFn )
+            || !ApplicationConfig::Get() ->GetVariableByNameChecked( "WindowHeight", WindowHeight, WindowSizeCheckFn ) )
         {
-            Logger::Get() -> Log ( { "Application", LogMessageType::Warning ,
-                                     "Application::InitializeWindow(): Config doesn't contain WindowWidth, WindowHeight or they are invalid" } );
             WindowWidth = DEFAULT_WINDOW_WIDTH;
             WindowHeight = DEFAULT_WINDOW_HEIGHT;
         }
-        m_MainWindow  = glfwCreateWindow(WindowWidth, WindowHeight, AppName.c_str(), NULL, NULL);
-        if (!m_MainWindow){
-            Logger::Get() -> Log ( { "Application", LogMessageType::Error, "Application::InitializeWindow(): Can't create main window" } );
-            return false;
-        }
-        glfwMakeContextCurrent(m_MainWindow);
+
+        WindowProperties Properties ( AppName, WindowWidth, WindowHeight, false );
+        m_Window = std::make_unique<Window> ( Properties );
+
+        // Or we can use m_Window->SetEventCallback( [this](auto && PH1) { OnEvent(std::forward<decltype(PH1)>(PH1)); } );
+        m_Window->SetEventCallback( std::bind ( &Application::OnEvent, this, std::placeholders::_1 ) );
+
         return true;
     }
 
     bool Application::InitializeInput() {
-        return false;
+        return true; // TODO:: make inputs
+        LK_ASSERT ( false );
+    }
+
+    void Application::OnEvent(Event &E) {
+        if ( E.GetEventType() == EventType::WindowClose )
+            m_Running = false;
     }
 
 } // end namespace lk
