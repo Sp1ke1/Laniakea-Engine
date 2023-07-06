@@ -51,26 +51,26 @@ bool Application::Initialize(int argc, char **argv)
 
 
 bool Application::StartMainLoop() {
-    if ( m_Running ) {
-        LK_LOG("Application", LogMessageType::Warning, "Application::StartMainLoop() called when application is already running.")
+
+    if ( m_Running )
+    {
+        LK_LOG("Application", LogMessageType::Warning, "Application::StartMainLoop() called when application is already running.");
         return false;
     }
-
     m_Running = true;
-
     while ( m_Running )
     {
-        glClearColor (1, 0, 1, 1);
-        glClear(GL_COLOR_BUFFER_BIT);
-        LK_ASSERT ( m_Window );
-        m_Window -> Update();
+        Update();
     }
     return true;
 
 }
 
-void Application::Update() {
 
+void Application::Update()
+{
+    LK_ASSERT ( m_Window );
+    m_Window -> Update();
 }
 
 
@@ -136,7 +136,11 @@ void Application::Exit() {
 
     void Application::OnEvent(Event &E) {
         if ( E.GetEventType() == EventType::WindowClose )
+        {
+            LK_LOG ( "Application", LogMessageType::Log, "Received window close event" );
             m_Running = false;
+        }
+
     }
 
 } // end namespace lk

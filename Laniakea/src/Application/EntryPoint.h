@@ -11,14 +11,13 @@ int main ( int argc, char ** argv )
         delete app;
         return EXIT_FAILURE;
     }
-
     if ( !app -> StartMainLoop() )
     {
         LK_LOG ( "Application", LogMessageType::Error, "main() . Can't start application main loop");
         delete app;
         return EXIT_FAILURE;
     }
-
+    delete app;
     return EXIT_SUCCESS;
 }
 

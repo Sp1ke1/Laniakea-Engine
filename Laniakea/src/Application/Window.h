@@ -1,8 +1,6 @@
 #pragma once
 
 #include "Core.h"
-#include <cassert>
-
 #include "Events/Event.h"
 #include <functional>
 

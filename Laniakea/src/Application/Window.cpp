@@ -25,6 +25,7 @@ namespace lk {
 
     void Window::Update() {
         glfwPollEvents();
+        glfwSwapBuffers ( m_Window );
     }
 
 
@@ -70,7 +71,7 @@ namespace lk {
             Logger::Get() -> Log ( { "Application", LogMessageType::Error, "Window::Init(). Can't create window" } );
             return;
         }
-
+        glfwMakeContextCurrent( m_Window );
         // Binds some user data pointer and allows to get it using glfwGetWindowUserPointer( glfwWindow * )
         glfwSetWindowUserPointer( m_Window, &m_WindowData );
 

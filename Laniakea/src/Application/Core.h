@@ -12,7 +12,7 @@
 
 #ifdef LANIAKEA_BUILD_DEBUG
     #define LK_ASSERT(Condition) { assert (Condition); }
-    #define LK_LOG(LogTag, LogType, LogMessage) { Logger::Get() -> Log({LogTag, LogType, LogMessage}); }
+    #define LK_LOG(LogTag, LogType, LogMessage) Logger::Get() -> Log({LogTag, LogType, LogMessage})
 #else
     #define LK_LOG(LogTag, LogType, LogMessage)
     #define LK_ASSERT(Condition)
