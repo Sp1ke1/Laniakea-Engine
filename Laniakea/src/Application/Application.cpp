@@ -135,11 +135,43 @@ void Application::Exit() {
     }
 
     void Application::OnEvent(Event &E) {
-        if ( E.GetEventType() == EventType::WindowClose )
+
+        switch ( E.GetEventType() )
         {
-            LK_LOG ( "Application", LogMessageType::Log, "Received window close event" );
-            m_Running = false;
+            case EventType::WindowClose:
+            {
+                LK_LOG ( "Application", LogMessageType::Log, "Received window close event" );
+                m_Running = false;
+                break;
+            }
+            case EventType::WindowResize:
+            {
+                LK_LOG ( "Application", LogMessageType::Log, "Received window resize event: " + E.ToString() );
+                break;
+            }
+            case EventType::WindowMoved:
+            {
+                LK_LOG ( "Application", LogMessageType::Log, "Received window moved event: " + E.ToString() );
+                break;
+            }
+            case EventType::WindowFocus:
+            {
+                LK_LOG ( "Application", LogMessageType::Log, "Received window focus event: " + E.ToString() );
+                break;
+            }
+            case EventType::WindowLostFocus:
+            {
+                LK_LOG ( "Application", LogMessageType::Log, "Received window last focus event: " + E.ToString() );
+                break;
+            }
+            default:
+            {
+                // LK_LOG ( "Application", LogMessageType::Warning, "Received event with no implementation: " + E.ToString() );
+                break;
+            }
         }
+
+
 
     }
 

@@ -52,12 +52,12 @@ public:
 protected:
     Logger();
 
-    void PrintToCerr(const LoggerMessage &Message) const;
+    void PrintToConsole(const LoggerMessage &Message) const;
 
 protected:
     static Logger *m_Instance;
     std::vector<LoggerMessage> m_Log;
-    bool m_PrintToCerr = true;
+    bool m_PrintToConsole = true;
     LogMessageType m_Verbosity = LogMessageType::Log;
 
 };

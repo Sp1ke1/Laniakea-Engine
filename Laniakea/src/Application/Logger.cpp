@@ -31,14 +31,15 @@ namespace lk {
     }
 
     void Logger::Log(const LoggerMessage &Message) {
-        if (m_PrintToCerr && Message.MessageType >= m_Verbosity)
-            PrintToCerr(Message);
+        if (m_PrintToConsole && Message.MessageType >= m_Verbosity)
+            PrintToConsole(Message);
         m_Log.push_back(Message);
     }
 
-    void Logger::PrintToCerr(const LoggerMessage &Message) const {
+    void Logger::PrintToConsole(const LoggerMessage &Message) const {
 
-        std::cerr << "[" << Message.Tag << "]" << " : " << LoggerMessageTypeToString(Message.MessageType) << " : "
+        auto & Stream = Message.MessageType == LogMessageType::Error ? std::cerr : std::cout;
+        Stream << "[" << Message.Tag << "]" << " : " << LoggerMessageTypeToString(Message.MessageType) << " : "
                   << Message.Message << std::endl;
     }
 
@@ -83,7 +84,7 @@ namespace lk {
 
     void Logger::SetPrintToCerr(bool PrintToCerr) {
 
-        m_PrintToCerr = PrintToCerr;
+        m_PrintToConsole = PrintToCerr;
     }
 
     Logger::Logger() {
