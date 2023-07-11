@@ -1,8 +1,14 @@
 #pragma once
+
 #include "Core.h"
-#include <vector>
-#include <string>
-#include <iostream>
+
+#ifdef LANIAKEA_BUILD_DEBUG
+    #define LK_LOG(LogTag, LogType, LogMessage) Logger::Get() -> Log({LogTag, LogType, LogMessage})
+#else
+    #define LK_LOG(LogTag, LogType, LogMessage)
+#endif
+
+
 
 namespace lk {
 enum class LogMessageType {

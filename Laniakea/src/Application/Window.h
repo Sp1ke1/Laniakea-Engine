@@ -1,8 +1,10 @@
 #pragma once
 
 #include "Core.h"
+#include "glfw/include/glfw3.h"
 #include "Events/Event.h"
-#include <functional>
+#include "Events/EventDispatcher.h"
+
 
 namespace lk {
     using EventCallbackFn = std::function<void ( Event & )>;
@@ -12,15 +14,15 @@ namespace lk {
         uint32_t Width;
         uint32_t Height;
         bool VSync;
-        EventCallbackFn EventCallback;
+        EventDispatcher WindowEventDispatcher;
 
         WindowProperties ( const std::string & title = "Laniakea", uint32_t width = 1280, uint32_t height = 720, bool VSync = false )
         : Title ( title ), Width ( width ), Height ( height ), VSync ( VSync )
         {};
 
-        WindowProperties ( const std::string & title, uint32_t width, uint32_t height, bool VSync, EventCallbackFn & eventCallback )
-                : Title ( title ), Width ( width ), Height ( height ), VSync ( VSync ), EventCallback( eventCallback )
-        {};
+      /*  WindowProperties ( const std::string & title, uint32_t width, uint32_t height, bool VSync, EventCallbackFn & eventCallback )
+                : Title ( title ), Width ( width ), Height ( height ), VSync ( VSync ), EventCallback( eventCallback ) // TODO: delete
+        {};*/
     };
     class LANIAKEA_API Window {
 
@@ -35,11 +37,17 @@ namespace lk {
 
         inline uint32_t GetHeight() const;
 
+/*
         void SetEventCallback ( const EventCallbackFn & callback );
+*/ // TODO delete
 
         void SetVSync ( bool enabled );
 
         bool IsVSync () const;
+
+        GLFWwindow * GetGLFWWindow () const;
+
+        EventDispatcher & GetWindowEventDispatcher ();
 
     private:
         void Init( const WindowProperties & Properties );

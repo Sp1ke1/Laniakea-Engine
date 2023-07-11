@@ -1,6 +1,4 @@
-#include "Logger.h"
-#include "Input.h"
-#include <cassert>
+#pragma once
 
 #ifdef LANIAKEA_PLATFORM_WINDOWS
     #ifdef LANIAKEA_BUILD_DLL
@@ -12,11 +10,31 @@
 
 #ifdef LANIAKEA_BUILD_DEBUG
     #define LK_ASSERT(Condition) { assert (Condition); }
-    #define LK_LOG(LogTag, LogType, LogMessage) Logger::Get() -> Log({LogTag, LogType, LogMessage})
 #else
-    #define LK_LOG(LogTag, LogType, LogMessage)
     #define LK_ASSERT(Condition)
 #endif
 
 
 #define BIT(x) (1 << x )
+
+// STL containers
+#include <vector>
+#include <string>
+#include <map>
+#include <set>
+#include <unordered_map>
+#include <unordered_set>
+
+// I/O
+
+#include <sstream>
+#include <fstream>
+#include <iostream>
+
+// Utility
+
+#include <functional>
+#include <algorithm>
+#include <cassert>
+#include <cstdint>
+

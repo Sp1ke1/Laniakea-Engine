@@ -28,7 +28,9 @@ namespace lk
 
         std::string ToString() const override
         {
-            return std::string ( "KeyPressedEvent " ) + std::to_string ( m_KeyCode );
+            std::stringstream ss;
+            ss << "KeyPressedEvent: " << m_KeyCode;
+            return ss.str();
         }
 
         EVENT_CLASS_TYPE(KeyPressed)
@@ -44,7 +46,9 @@ namespace lk
 
         std::string ToString() const override
         {
-            return std::string ( "KeyReleasedEvent " ) + std::to_string ( m_KeyCode );
+            std::stringstream ss;
+            ss << "KeyReleasedEvent: " << m_KeyCode;
+            return ss.str();
         }
 
         EVENT_CLASS_TYPE(KeyReleased)
@@ -58,7 +62,9 @@ namespace lk
 
         std::string ToString() const override
         {
-            return std::string ( "KeyTypedEvent " ) + std::to_string ( m_KeyCode );
+            std::stringstream ss;
+            ss << "KeyTypedEvent: " << m_KeyCode;
+            return ss.str();
         }
 
         EVENT_CLASS_TYPE(KeyTyped)

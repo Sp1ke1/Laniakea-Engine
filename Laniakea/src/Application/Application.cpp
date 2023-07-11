@@ -1,24 +1,38 @@
 #include "Application.h"
-
-
-
-
+#include "Input.h"
 
 namespace lk
 {
+
+Application * Application::s_Instance = nullptr;
+
+Application::Application() {
+    LK_ASSERT (!s_Instance);
+    s_Instance = this;
+}
+
+Application *Application::Get() {
+    LK_ASSERT ( s_Instance );
+    return s_Instance;
+}
 
 Application::~Application()
 {
     Logger::Destroy();
     ApplicationConfig::Destroy();
     glfwTerminate();
+
+    if ( s_Instance ) {
+        delete s_Instance;
+        s_Instance = nullptr;
+    }
 }
 
 bool Application::Initialize(int argc, char **argv)
 {
     if ( m_IsInitialized )
     {
-        Logger::Get() -> Log ( { "Application", LogMessageType::Warning, "Application()::Init() Application was already initialized" } );
+        LK_LOG ( "Application" , LogMessageType::Warning, "Application()::Init() Application was already initialized" );
         return false;
     }
     std::string ConfigPath;
@@ -30,18 +44,18 @@ bool Application::Initialize(int argc, char **argv)
 
     if (!ApplicationConfig::Get() ->LoadConfigFromFile( ConfigPath ) )
     {
-        Logger::Get() -> Log( {"Application", LogMessageType::Error, "Application::Init() Can't load config from given path: " + ConfigPath } );
+        LK_LOG ( "Application" , LogMessageType::Error, "Application::Init() Can't load config from given path: " + ConfigPath );
         return false;
     }
 
     if ( ! InitializeWindow () ) {
-        Logger::Get()->Log({"Application", LogMessageType::Error, "Application::Init() Can't initialize window"});
+        LK_LOG ( "Application" , LogMessageType::Error, "Application::Init() Can't initialize window" );
         return false;
     }
 
-    if ( !InitializeInput() )
+    if ( !Input::Initialize() )
     {
-        Logger::Get() -> Log ( { "Application", LogMessageType::Error, "Application::Init() Can't initialize input system" } );
+        LK_LOG ( "Application", LogMessageType::Error, "Application::Init() Can't initialize input" );
         return false;
     }
 
@@ -72,14 +86,6 @@ void Application::Update()
     LK_ASSERT ( m_Window );
     m_Window -> Update();
 }
-
-
-void Application::Exit() {
-
-}
-
-
-
 
     bool Application::GetProgramArgumentValue(int argc, char **argv, const std::string &ArgumentName, std::string &value)
     {
@@ -122,19 +128,26 @@ void Application::Exit() {
 
         WindowProperties Properties ( AppName, WindowWidth, WindowHeight, false );
         m_Window = std::make_unique<Window> ( Properties );
+        if ( !m_Window )
+        {
+            LK_LOG ( "Application", LogMessageType::Error, "Application::InitializeWindow() Can't create main window"  );
+            return false;
+        }
 
-        // Or we can use m_Window->SetEventCallback( [this](auto && PH1) { OnEvent(std::forward<decltype(PH1)>(PH1)); } );
-        m_Window->SetEventCallback( std::bind ( &Application::OnEvent, this, std::placeholders::_1 ) );
+        // Note: We can use m_Window->SetEventCallback( [this](auto && PH1) { OnEvent(std::forward<decltype(PH1)>(PH1)); } );
+        // Or std::bind ( &Application::OnEvent, this, std::placeholders::_X )
+/*
+        m_Window->SetEventCallback( [this] ( Event & e ) { OnEvent ( e ); } );
+*/
+
+        m_Window -> GetWindowEventDispatcher().Bind ( [this] ( Event & e ) -> bool  { return OnEvent ( e ); } );
 
         return true;
     }
 
-    bool Application::InitializeInput() {
-        return true; // TODO:: make inputs
-        LK_ASSERT ( false );
-    }
-
-    void Application::OnEvent(Event &E) {
+    bool Application::OnEvent(Event &E)
+    {
+//        return GetApplicationEventDispatcher().Dispatch( E );
 
         switch ( E.GetEventType() )
         {
@@ -164,15 +177,26 @@ void Application::Exit() {
                 LK_LOG ( "Application", LogMessageType::Log, "Received window last focus event: " + E.ToString() );
                 break;
             }
+
+            case EventType::KeyPressed:
+            {
+                LK_LOG ( "Application", LogMessageType::Log, "Received: " + E.ToString() );
+            }
             default:
             {
                 // LK_LOG ( "Application", LogMessageType::Warning, "Received event with no implementation: " + E.ToString() );
                 break;
             }
         }
-
-
-
+        return true;
     }
 
+    const Window &Application::GetWindow() const
+    {
+        return * m_Window;
+    }
+
+    EventDispatcher & Application::GetApplicationEventDispatcher() {
+        return m_ApplicationEventDispatcher;
+    }
 } // end namespace lk

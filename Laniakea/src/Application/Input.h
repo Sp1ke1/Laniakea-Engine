@@ -1,13 +1,14 @@
 #pragma once
 
-#include <map>
-#include <vector>
-#include "glfw/include/glfw3.h"
 #include "Core.h"
+#include "Application.h"
 
-// TODO: Consider making event based input
-// TODO: http://www.grandmaster.nu/blog/?page_id=191
-// TODO: https://stackoverflow.com/questions/55573238/how-do-i-do-a-proper-input-class-in-glfw-for-a-game-engine
+#include "KeyCodes.h"
+#include "MouseCodes.h"
+
+#include "glm/include/glm.hpp"
+#include "glfw/include/glfw3.h"
+
 
 namespace lk {
 enum class KeyState {
@@ -19,25 +20,26 @@ enum class KeyState {
 class LANIAKEA_API Input {
 
 public:
-    Input(GLFWwindow *window);
+    static bool GetIsKeyPressed ( const KeyCode keycode );
 
-    ~Input() = default;
+    static bool GetIsMouseButtonPressed ( const MouseCode mouseCode );
 
-    bool GetIsKeyDown(int Key) const;
+    static glm::vec2 GetMouseLocation ();
+
+    static float GetMouseX();
+
+    static float GetMouseY();
+
+    static bool Initialize();
+
+    static const EventDispatcher & GetInputEventDispatcher ();
 
 private:
-    void SetIsKeyDown(int Key, bool IsDown);
 
-    void SetupInputCallbacks(GLFWwindow *window);
-
-    static void KeyboardCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
-
-    static void MouseButtonCallback(GLFWwindow *window, int button, int action, int mods);
+    static bool OnEvent ( Event & e );
 
 
-   /* std::map<int, KeyState> m_KeyboardButtons;
-    std::map<int, KeyState> m_MouseButtons;*/
-
+    static EventDispatcher m_InputEventDispatcher;
 };
 } // end namespace lk
 

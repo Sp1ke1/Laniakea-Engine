@@ -1,8 +1,8 @@
 #pragma once
 
+
 #include "Application/Core.h"
 
-#include <functional>
 
 
 // from https://github.com/TheCherno/Hazel

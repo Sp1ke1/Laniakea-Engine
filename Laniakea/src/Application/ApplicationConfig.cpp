@@ -1,8 +1,5 @@
-//
-// Created by NB01 on 6/5/2023.
-//
-
 #include "ApplicationConfig.h"
+
 namespace lk {
 
     ApplicationConfig * ApplicationConfig::m_Instance = nullptr;

@@ -1,8 +1,9 @@
 #pragma once
-#include "json/include/json.hpp"
+
 #include "Core.h"
-#include <functional>
-#include <fstream>
+#include "Logger.h"
+#include "json/include/json.hpp"
+
 
 
 #pragma region CongigDefaults
@@ -41,13 +42,13 @@ public:
     {
         if ( !m_ConfigJson.contains ( VarName ) )
         {
-            Logger::Get() ->Log( { "Config", LogMessageType::Error, std::string ( "Config doesn't contain variable with name: ") + VarName } );
+            LK_LOG("Config", LogMessageType::Error, "Config doesn't contain variable with name: " + VarName );
             return false;
         }
         value = m_ConfigJson[VarName].get<ValueType> ();
         if ( !p ( value ) )
         {
-            Logger::Get() -> Log ( { "Config", LogMessageType::Error, std::string ( "Config variable: ") + VarName + " doesn't matches predicate filter " } );
+            LK_LOG("Config", LogMessageType::Error, "Config variable: " + VarName + " doesn't matches predicate filter " );
             return false;
         }
         return true;
@@ -58,7 +59,6 @@ public:
 
 
 protected:
-    auto static GetDefaultConfig ();
     ApplicationConfig() = default;
 
 private:

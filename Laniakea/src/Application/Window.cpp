@@ -1,5 +1,6 @@
-#pragma once
+
 #include "Window.h"
+#include "Logger.h"
 
 #include "Events/ApplicationEvent.h"
 #include "Events/KeyEvent.h"
@@ -37,10 +38,10 @@ namespace lk {
         return m_WindowData.Height;
     }
 
-    void Window::SetEventCallback(const EventCallbackFn &callback) {
+/*    void Window::SetEventCallback(const EventCallbackFn &callback) {
         m_WindowData.EventCallback = callback;
-    }
-
+    }*/
+// TODO delete
     void Window::SetVSync(bool enabled) {
         if ( enabled )
             glfwSwapInterval ( 1 );
@@ -83,7 +84,7 @@ namespace lk {
                                         data.Height = height;
 
                                         WindowResizeEvent event (width, height);
-                                        data.EventCallback ( event );
+                                        data.WindowEventDispatcher.Dispatch( event );
                                     }
         );
 
@@ -91,7 +92,7 @@ namespace lk {
         {
             WindowProperties & data = *(WindowProperties*) glfwGetWindowUserPointer( window );
             WindowCloseEvent event;
-            data.EventCallback ( event );
+            data.WindowEventDispatcher.Dispatch( event );
         });
 
         glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -103,19 +104,19 @@ namespace lk {
                 case GLFW_PRESS:
                 {
                     KeyPressedEvent event(key, 0);
-                    data.EventCallback(event);
+                    data.WindowEventDispatcher.Dispatch( event );
                     break;
                 }
                 case GLFW_RELEASE:
                 {
                     KeyReleasedEvent event(key);
-                    data.EventCallback(event);
+                    data.WindowEventDispatcher.Dispatch( event );
                     break;
                 }
                 case GLFW_REPEAT:
                 {
                     KeyPressedEvent event(key, true);
-                    data.EventCallback(event);
+                    data.WindowEventDispatcher.Dispatch( event );
                     break;
                 }
             }
@@ -126,7 +127,7 @@ namespace lk {
             WindowProperties& data = *(WindowProperties*)glfwGetWindowUserPointer(window);
 
             KeyTypedEvent event(keycode);
-            data.EventCallback(event);
+            data.WindowEventDispatcher.Dispatch( event );
         });
 
         glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods)
@@ -138,13 +139,13 @@ namespace lk {
                 case GLFW_PRESS:
                 {
                     MouseButtonPressedEvent event(button);
-                    data.EventCallback(event);
+                    data.WindowEventDispatcher.Dispatch( event );
                     break;
                 }
                 case GLFW_RELEASE:
                 {
                     MouseButtonReleasedEvent event(button);
-                    data.EventCallback(event);
+                    data.WindowEventDispatcher.Dispatch( event );
                     break;
                 }
             }
@@ -155,7 +156,7 @@ namespace lk {
             WindowProperties& data = *(WindowProperties*)glfwGetWindowUserPointer(window);
 
             MouseScrolledEvent event((float)xOffset, (float)yOffset);
-            data.EventCallback(event);
+            data.WindowEventDispatcher.Dispatch( event );
         });
 
         glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xPos, double yPos)
@@ -163,10 +164,20 @@ namespace lk {
             WindowProperties& data = *(WindowProperties*)glfwGetWindowUserPointer(window);
 
             MouseMovedEvent event((float)xPos, (float)yPos);
-            data.EventCallback(event);
+            data.WindowEventDispatcher.Dispatch( event );
         });
 
         s_WindowCount++;
+    }
+
+    GLFWwindow *Window::GetGLFWWindow() const {
+        return m_Window;
+    }
+
+
+
+    EventDispatcher & Window::GetWindowEventDispatcher()  {
+        return m_WindowData.WindowEventDispatcher;
     }
 
 

@@ -53,6 +53,7 @@ IF ( WIN32 )
 ENDIF ()
 add_compile_definitions( LANIAKEA_BUILD_DLL )
 
+
 # -------- Add executables  --------
 set (LANIAKEA_SOURCE_APPLICATION ${LANIAKEA_SOURCE_DIR}/Application/Application.h ${LANIAKEA_SOURCE_DIR}/Application/Application.cpp
                                  ${LANIAKEA_SOURCE_DIR}/Application/KeyCodes.h
@@ -68,6 +69,8 @@ set (LANIAKEA_SOURCE_APPLICATION ${LANIAKEA_SOURCE_DIR}/Application/Application.
                                  ${LANIAKEA_SOURCE_DIR}/Application/Events/MouseEvent.h ${LANIAKEA_SOURCE_DIR}/Application/MouseCodes.h
                                  ${LANIAKEA_SOURCE_DIR}/Application/Window.h ${LANIAKEA_SOURCE_DIR}/Application/Window.cpp)
 add_library(LaniakeaEngine SHARED ${LANIAKEA_SOURCE_APPLICATION})
+
+
 
 # -------- Link target --------
 target_link_libraries (LaniakeaEngine glfw3 opengl32)

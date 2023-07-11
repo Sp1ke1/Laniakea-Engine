@@ -1,8 +1,5 @@
-//
-// Created by NB01 on 6/4/2023.
-//
-
 #include "Logger.h"
+
 
 namespace lk {
     Logger * Logger::m_Instance = nullptr;

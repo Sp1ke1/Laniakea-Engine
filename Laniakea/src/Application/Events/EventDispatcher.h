@@ -3,23 +3,27 @@
 
 // from https://github.com/TheCherno/Hazel
 
+typedef size_t EventHandle;
+
 namespace lk {
     class LANIAKEA_API EventDispatcher {
     public:
-        EventDispatcher(Event &event);
+        using Callback = std::function<bool ( Event &)>;
 
-        // F will be deduced by the compiler
-        template<typename T, typename F>
-        bool Dispatch(const F &func) {
-            if (m_Event.GetEventType() == T::GetStaticType()) {
-                m_Event.Handled |= func(static_cast<T &>(m_Event));
-                return true;
-            }
-            return false;
-        }
+        bool Dispatch ( Event & e );
+
+        EventHandle Bind (  Callback cb );
+
+        bool Unbind ( const EventHandle & handle );
+
+/*
+        const Event & GetEvent () const;
+
+        void SetEvent ( Event & e );
+*/
 
     private:
-        Event &m_Event;
+        std::vector <Callback> m_BoundCallbacks;
     };
 
     inline std::ostream &operator<<(std::ostream &os, const Event &e) {

@@ -1,8 +1,5 @@
 #pragma once
 
-#pragma once
-#include <cstdint>
-
 namespace lk
 {
     using MouseCode = uint16_t;

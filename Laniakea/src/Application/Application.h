@@ -2,6 +2,7 @@
 
 #include "Core.h"
 #include "Events/ApplicationEvent.h"
+#include "Events/EventDispatcher.h"
 #include "Window.h"
 #include "ApplicationConfig.h"
 
@@ -11,6 +12,7 @@ namespace lk {
 class LANIAKEA_API Application {
 public:
 
+    Application();
     ~Application();
 
     /**
@@ -29,26 +31,27 @@ public:
      */
     bool StartMainLoop();
 
-    /**
-     * @brief Exits the application.
-     */
-    void Exit();
+    const Window & GetWindow () const;
+
+    static Application * Get();
+
+    EventDispatcher & GetApplicationEventDispatcher ();
 
 
 private:
     static bool GetProgramArgumentValue ( int argc, char ** argv, const std::string & ArgumentName, std::string & value);
     void Update();
-    bool InitializeInput();
     bool InitializeWindow();
-    void OnEvent ( Event & E );
+    bool OnEvent ( Event & E );
 
 
+    static Application * s_Instance;
     std::unique_ptr <Window> m_Window = nullptr;
-    Input * m_InputHandler = nullptr;
     bool m_IsInitialized = false;
     bool m_Running = false;
-};
 
+    EventDispatcher m_ApplicationEventDispatcher;
+};
     // To be defined in client
     Application * CreateApplication();
 } // end namespace lk
