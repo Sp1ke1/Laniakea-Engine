@@ -1,0 +1,10 @@
+file(GLOB LANIAKEA_LIB_DIRS RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/*")
+list(REMOVE_ITEM LANIAKEA_LIB_DIRS "CMakeLists.txt")
+set (LANIAKEA_LIBRARIES)
+
+foreach(lib ${LANIAKEA_LIB_DIRS})
+    add_subdirectory(${lib})
+    target_compile_definitions(laniakea-${lib} PUBLIC ${LANIAKEA_DEFINITIONS})
+    target_compile_options(laniakea-${lib} PUBLIC ${LANIAKEA_CXX_FLAGS})
+    list(APPEND LANIAKEA_LIBRARIES laniakea-${lib})
+endforeach()
