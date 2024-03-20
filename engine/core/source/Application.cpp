@@ -21,11 +21,6 @@ Application::~Application()
     Logger::Destroy();
     ApplicationConfig::Destroy();
     glfwTerminate();
-
-    if ( s_Instance ) {
-        delete s_Instance;
-        s_Instance = nullptr;
-    }
 }
 
 bool Application::Initialize(int argc, char **argv)

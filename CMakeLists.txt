@@ -10,9 +10,9 @@ set (LANIAKEA_CXX_FLAGS)
 
 # 3RD party
 set (LANIAKEA_3RDPARTY_INCLUDE)
-set (LANIAKEA_3RDPARTY_GLFW_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/glfw/lib )
+set (LANIAKEA_3RDPARTY_LIBS)
 
-
+# Setup build output directory. TODO: consider more sofisticated way
 set ( LANIAKEA_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/sample/build/${CMAKE_BUILD_TYPE} )
 set ( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${LANIAKEA_OUTPUT_DIRECTORY} )
 
@@ -40,6 +40,8 @@ ENDIF ()
 
 add_subdirectory(3rdparty)
 include_directories( ${LANIAKEA_3RDPARTY_INCLUDE} )
+message( STATUS ${LANIAKEA_3RDPARTY_LIBS} )
+link_directories( ${LANIAKEA_3RDPARTY_LIBS} )
 
 add_subdirectory(engine)
 add_subdirectory(sample)
