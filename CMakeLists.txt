@@ -13,7 +13,7 @@ set (LANIAKEA_3RDPARTY_INCLUDE)
 set (LANIAKEA_3RDPARTY_LIBS)
 
 # Setup build output directory. TODO: consider more sofisticated way
-set ( LANIAKEA_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/sample/build/${CMAKE_BUILD_TYPE} )
+set ( LANIAKEA_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Sample/Build/${CMAKE_BUILD_TYPE} CACHE INTERNAL "")
 set ( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${LANIAKEA_OUTPUT_DIRECTORY} )
 
 # Compiler options setup
@@ -40,11 +40,9 @@ ENDIF ()
 
 add_subdirectory(3rdparty)
 include_directories( ${LANIAKEA_3RDPARTY_INCLUDE} )
-message( STATUS ${LANIAKEA_3RDPARTY_LIBS} )
-link_directories( ${LANIAKEA_3RDPARTY_LIBS} )
 
-add_subdirectory(engine)
-add_subdirectory(sample)
+add_subdirectory(Engine)
+add_subdirectory(Sample)
 
 
 

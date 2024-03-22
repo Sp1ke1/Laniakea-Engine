@@ -1,4 +1,9 @@
 .idea/
 cmake-build-debug/
 cmake-build-release/
-sample/build/
+Sample/Build/
+
+3rdparty/*/lib/*.dll
+3rdparty/*/lib/*.so
+3rdparty/*/lib/*.a
+3rdparty/*/lib/*.dylib
