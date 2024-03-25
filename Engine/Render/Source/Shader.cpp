@@ -1,4 +1,5 @@
 #include "Laniakea/Render/Shader.h"
+#include "Laniakea/Render/RenderException.h"
 #include "glad/glad.h"
 #include <fstream>
 #include <sstream>

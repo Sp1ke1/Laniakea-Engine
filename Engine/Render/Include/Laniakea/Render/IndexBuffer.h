@@ -1,12 +1,12 @@
 #include <vector>
-#include "Core.h"
+#include "Laniakea/Render/Core.h"
 
 namespace lk
 {
 namespace gfx
 {
 
-class  IndexBuffer
+class LANIAKEA_RENDER_API IndexBuffer
 {
 public:
 	IndexBuffer ();

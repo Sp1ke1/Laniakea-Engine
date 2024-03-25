@@ -11,25 +11,6 @@ namespace gfx
 {
 
 
-class LANIAKEA_RENDER_API RenderException : public std::exception
-{
-	public:
-		RenderException ( const std::string & msg )
-		: m_Msg ( msg )
-		{};
-
-		RenderException ( std::string && msg )
-		: m_Msg ( std::move ( msg ) )
-		{};
-
-		const char * what() const noexcept override
-		{
-			return m_Msg.c_str();
-		}
-	private:
-		std::string m_Msg;
-};
-
 struct LANIAKEA_RENDER_API ShaderAttributeData
 {
 	std::string Name;

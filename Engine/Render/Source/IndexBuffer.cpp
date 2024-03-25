@@ -1,5 +1,6 @@
 #include "glad/glad.h"
 #include "Laniakea/Render/IndexBuffer.h"
+#include "Laniakea/Render/RenderException.h"
 
 
 namespace lk
@@ -36,6 +37,7 @@ void IndexBuffer::Set ( unsigned int * Array, unsigned int Length )
 	glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER, m_Handle );
 	glBufferData ( GL_ELEMENT_ARRAY_BUFFER, Size * m_Count, Array, GL_STATIC_DRAW );
 	glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER, 0 );
+	LK_RENDER_CHECK_ERROR()
 }
 
 void IndexBuffer::Set ( std::vector <unsigned int> & Array )

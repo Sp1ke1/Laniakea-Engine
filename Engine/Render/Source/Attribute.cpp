@@ -1,5 +1,9 @@
 #include "glad/glad.h"
 #include "Laniakea/Render/Attribute.h"
+#include "Laniakea/Render/RenderException.h"
+
+
+
 
 namespace lk
 {
@@ -28,30 +32,14 @@ unsigned int Attribute::GetCount () const
 	return m_Count;
 }
 
-template <typename T>
-void Attribute::Set ( T * Array, unsigned int Length )
-{
-	m_Count = Length;
-	unsigned int size = sizeof ( T );
-	glBindBuffer ( GL_ARRAY_BUFFER, m_Handle );
-	glBufferData ( GL_ARRAY_BUFFER, size * m_Count, Array, GL_STATIC_DRAW );
-	glBindBuffer ( GL_ARRAY_BUFFER, 0 );
-}
-
-template <typename T>
-void Attribute::Set ( std::vector <T> & Array )
-{
-	Set ( Array.data(), ( unsigned int ) Array . size () );
-}
-
-
 void Attribute::BindTo ( const AttributeDescriptor & Descriptor )
 {
 	glBindBuffer ( GL_ARRAY_BUFFER, m_Handle );
 	glEnableVertexAttribArray ( Descriptor . Slot );
-	glVertexAttribPointer ( Descriptor . Slot, Descriptor . Size, GL_FALSE, Descriptor . Type, Descriptor . Stride,
+	glVertexAttribPointer ( Descriptor . Slot, Descriptor . Size, Descriptor . Type, GL_FALSE, Descriptor . Stride,
 							( void * ) ( uintptr_t ) Descriptor . Offset );
 	glBindBuffer ( GL_ARRAY_BUFFER, 0 );
+	LK_RENDER_CHECK_ERROR()
 }
 
 void Attribute::UnbindFrom ( unsigned int Slot )
@@ -59,7 +47,24 @@ void Attribute::UnbindFrom ( unsigned int Slot )
 	glBindBuffer ( GL_ARRAY_BUFFER, m_Handle );
 	glDisableVertexAttribArray ( Slot );
 	glBindBuffer ( GL_ARRAY_BUFFER, m_Handle );
+	LK_RENDER_CHECK_ERROR()
 }
 
+} // namespace gfx
+} // namespace lk
+
+
+namespace lk {
+namespace gfx {
+namespace detail {
+
+	void _SetAttributeImpl(unsigned int handle, const void* data, unsigned int size, unsigned int length) {
+		glBindBuffer(GL_ARRAY_BUFFER, handle);
+		glBufferData(GL_ARRAY_BUFFER, size * length, data, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		LK_RENDER_CHECK_ERROR()
+	}
+
+} // namespace detail
 } // namespace gfx
 } // namespace lk

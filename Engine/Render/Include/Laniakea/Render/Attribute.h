@@ -7,7 +7,11 @@ namespace lk
 namespace gfx
 {
 
-struct  AttributeDescriptor
+namespace detail
+{
+	void LANIAKEA_RENDER_API _SetAttributeImpl ( unsigned int handle, const void * data, unsigned int size, unsigned int length );
+}
+struct LANIAKEA_RENDER_API AttributeDescriptor
 {
 	unsigned int Slot;
 	unsigned int Size;
@@ -16,7 +20,7 @@ struct  AttributeDescriptor
 	unsigned int Offset;
 };
 
-class  Attribute
+class LANIAKEA_RENDER_API Attribute
 {
 	public:
 		Attribute ();
@@ -28,10 +32,16 @@ class  Attribute
 		Attribute & operator = ( const Attribute & ) = delete;
 
 		template <typename T>
-		void Set ( T * Array, unsigned int Lenght );
-
+		void Set ( T * Array, unsigned int Length )
+		{
+			m_Count = Length;
+			detail::_SetAttributeImpl ( m_Handle, ( void * ) Array, sizeof ( T ), Length );
+		}
 		template <typename T>
-		void Set ( std::vector <T> & Array );
+		void Set ( std::vector <T> & Array )
+		{
+			Set ( Array.data(), Array.size() );
+		}
 
 		void BindTo ( const AttributeDescriptor & Descriptor );
 

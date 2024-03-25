@@ -1,6 +1,6 @@
 #pragma once
-#include "Core.h"
-#include "Laniakea/Render/IndexBuffer.h"
+#include "Laniakea/Render/Core.h"
+
 
 
 namespace lk
@@ -8,7 +8,9 @@ namespace lk
 namespace gfx
 {
 
-/*enum class DrawMode
+class IndexBuffer;
+
+enum class DrawMode
 {
 	Points,
 	LineStrip,
@@ -19,12 +21,16 @@ namespace gfx
 	TriangleFan
 };
 
-class LANIAKEA_API Renderer
+class LANIAKEA_RENDER_API Renderer
 {
 public:
 	static void Render ( IndexBuffer & IndexBuffer, DrawMode DrawMode );
 	static void Render ( unsigned int VertexCount, DrawMode DrawMode );
-};*/
+
+
+private:
+	static unsigned int GetGLDrawModeFromDrawMode ( DrawMode DrawMode );
+};
 
 }
 }

@@ -1,6 +1,7 @@
 #include "glad/glad.h"
 #include "Laniakea/Render/Uniform.h"
-#include "glm.hpp"
+#include "Laniakea/Render/RenderException.h"
+#include "glm/glm.hpp"
 
 
 namespace lk
@@ -10,7 +11,8 @@ namespace gfx
 #define UNIFORM_SET_IMPL(gl_func, tType, dType) \
 template<> void Uniform::Set<tType> (unsigned int Slot, tType * Array, unsigned int Length ) \
 {                                               		       								 \
-     gl_func ( Slot, (GLsizei) Length, (dType*)&Array[0] );									 \
+     gl_func ( Slot, (GLsizei) Length, (dType*)&Array[0] );                                  \
+	 LK_RENDER_CHECK_ERROR() 															     \
 };
 	template <typename T>
 	void Uniform::Set ( unsigned int Slot, const T & value )
@@ -38,6 +40,7 @@ template<> void Uniform::Set<tType> (unsigned int Slot, tType * Array, unsigned 
 	template<> void Uniform::Set<glm::mat4>(unsigned int slot, glm::mat4 * inputArray, unsigned int arrayLength)
 	{
 		glUniformMatrix4fv(slot, (GLsizei)arrayLength, false, (float*)&inputArray[0]);
+		LK_RENDER_CHECK_ERROR();
 	}
 
 } // namespace gfx
