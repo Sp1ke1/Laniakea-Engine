@@ -17,6 +17,11 @@ goto :eof
 
 :MainScript
 
+IF "%1"=="" (
+    echo Usage: .\AddLibrary ^<LibraryName^>
+    exit
+)
+
 set "LIB_NAME=%1"
 call :ToUpper "%LIB_NAME%"
 set "LIB_NAME_UPPER=%result%"

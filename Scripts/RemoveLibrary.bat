@@ -1,4 +1,11 @@
 @echo off
+
+IF "%1"=="" (
+    echo Usage: .\RemoveLibrary ^<LibraryName^>
+    exit
+)
+
+
 REM Change to the parent directory
 cd ..
 
