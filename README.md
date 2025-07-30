@@ -1,4 +1,6 @@
-Laniakea Engine is a lightweight, modular C++ engine for real-time rendering and simulation, featuring a custom-built Entity-Component-System (ECS). The project is currently a work in progress.
+Laniakea Engine is a lightweight, modular C++ engine for real-time rendering and simulation, featuring a custom-built Entity-Component-System (ECS). 
+
+The project is currently a work in progress.
 
 Tried technologies:
 - Custom event system for processing messages in the engine.
